@@ -11,20 +11,26 @@
             
             document.write("<h1>Hallo" + input + "!</h1>");
             
-            let xs = [1, 2, 3, 4, 5];                                           // Scope nur innerhalb dieser Funktion!
+            let xs = [1, 2, 3, 4, 5];                                               // Scope nur innerhalb dieser Funktion!
                     // 0, 1, 2, 4
                     // i or index
             
-            const constantVar = 20                                              // globale Variable die nicht überschrieben werden kann!
+            const constantVar = 20                                                  // globale Variable die nicht überschrieben werden kann!
             
             console.log(xs[2])
             
             var myObject = {
-                'Feldname1': 'Wert1',                                           // Variable mit Arrays()
+                'Feldname1': 'Wert1',                                               // Variable mit Arrays{}
                 'Feldname2': 'Wert2'
             }
             
-            let fruitBowl = ['Apfle', 'Banane', 'Orange'];                      //  eine Let Variable mit beispiel Array
+            let fruitBowl = ['Apfle', 'Banane', 'Orange','..'];                     // eine Let Variable mit beispiel Array[]
+
+            for (let i in fruitBowl) {                                              // Ausgabe der Let Funktion dur For Schleife
+                console.log(fruitBowl[i])
+            }
+            const fruitBowl2 = {first: "apple", second: "banana", third: "orange"}  // globale Variable die nicht überschrieben werden kann! 
+                                                                                    // dieses mal als Array{}
             // js code here
         
         </script>
