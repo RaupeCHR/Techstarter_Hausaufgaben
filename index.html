@@ -6,8 +6,12 @@
         <script type="text/javascript">
             
             document.write("<h1>Wilkommen bei Techstarter</h1>");
-            var input = prompt("Bitte geben Sie hier Ihren Namen ein", "Name");
+            var input = prompt("Bitte geben Sie hier Ihren Namen ein", "Name"); //globaler Gültigkeitsbereich(Scope) im gesamtes Code Verfügbar!
             document.write("<h1>Hallo" + input + "!</h1>");
+            let xs = [1, 2, 3, 4, 5];                                           // Scope nur innerhalb dieser Funktion!
+                    // 0, 1, 2, 4
+                    // i or index
+            console.log(xs[2])
             // js code here
         
         </script>
@@ -21,8 +25,6 @@
     </head>
 
     <body>
-        <h1>Hello world </h1>
-        <h1>Hello</h1>
-        <p>Wilkommen bei Techstarter</p>
+        <button onclick="alert('Hello world')">Click me</button>
     </body>
 </html>
