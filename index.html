@@ -6,13 +6,25 @@
         <script type="text/javascript">
             
             document.write("<h1>Wilkommen bei Techstarter</h1>");
-            var input = prompt("Bitte geben Sie hier Ihren Namen ein", "Name"); //globaler Gültigkeitsbereich(Scope) im gesamtes Code Verfügbar!
+            
+            var input = prompt("Bitte geben Sie hier Ihren Namen ein", "Name"); // globaler Gültigkeitsbereich(Scope) im gesamtes Code Verfügbar!
+            
             document.write("<h1>Hallo" + input + "!</h1>");
+            
             let xs = [1, 2, 3, 4, 5];                                           // Scope nur innerhalb dieser Funktion!
                     // 0, 1, 2, 4
                     // i or index
+            
             const constantVar = 20                                              // globale Variable die nicht überschrieben werden kann!
+            
             console.log(xs[2])
+            
+            var myObject = {
+                'Feldname1': 'Wert1',                                           // Variable mit Arrays()
+                'Feldname2': 'Wert2'
+            }
+            
+            let fruitBowl = ['Apfle', 'Banane', 'Orange'];                      //  eine Let Variable mit beispiel Array
             // js code here
         
         </script>
