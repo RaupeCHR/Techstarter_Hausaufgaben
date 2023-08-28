@@ -9,7 +9,7 @@ function calculateAverage(numbers) {
   }
 
   // DE: Beispiel-Liste von Zahlen
-  const numbers = [5, 10, 15, 20, 25];
+  const numbers = [5777, 1990, 15, 520, 275];
   
   
   // DE: Berechne den Durchschnitt der Zahlen mit Hilfe der Funktion
