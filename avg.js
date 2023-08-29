@@ -13,3 +13,10 @@ let numbers = [1,2,3,4,5]
 let result = average(numbers)
 
 console.log(result)
+
+//function avg2(numbers) {
+//    return numbers.reduce((acc, number) => acc + number,0) / numbers.length                 // reduce Funktion
+//}
+
+//let res2 = avg(numbers)
+//console.log("Enrico: ", res2)
