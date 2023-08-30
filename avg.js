@@ -2,7 +2,7 @@
 
 function average(numbers) {
     let sum = 0;
-    for (let numer of numbers) {
+    for (let number of numbers) {
         sum += numbers;
     }
     return sum / numbers.length
