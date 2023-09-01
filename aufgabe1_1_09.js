@@ -1,5 +1,9 @@
-function removeFromArray(arr, ...args) {
-  return arr.filter(item => !args.includes(item));
+function repeatString(str, count) {
+  let repeatedString = '';
+  for (let i = 0; i < count; i++) {
+    repeatedString += str;
+  }
+  return repeatedString;
 }
 
-console.log(removeFromArray([1, 2, 3, 4], 3)); // gibt [1, 2, 4] aus
+console.log(repeatString('hey', 3)); // gibt 'heyheyhey' aus
