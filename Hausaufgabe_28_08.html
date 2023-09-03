@@ -1,27 +1,19 @@
 <html>
-    <head>
-   
-        <script type="text/javascript">
-            
-            document.write("<h1>Wilkommen bei meinen Hausaufagben</h1>");
-            
-            var input = prompt("Bitte geben Sie hier Ihren Namen ein", "Name");    // globaler Gültigkeitsbereich(Scope) im gesamtes Code Verfügbar!
-            
-            document.write("<h1>Hallo" + input + "!</h1>");
-            
-           
-        
-        </script>
-        
-        <script type="text/javascript" src="extern.js">
-            // js code here also
+<head>
+    <script type="text/javascript">
+        document.write("<h1>Wilkommen bei meinen Hausaufagben</h1>");
 
-        </script>
+        let username = prompt("Bitte geben Sie hier Ihren Namen ein", "Name");
+        console.log(
+            `Hallo, ${username}!`,
+            "Hallo, " + username
+        );
 
+        document.write('<h1>Hallo ' + username + ' !</h1>');
+    </script>
 
-    </head>
-
-    <body>
-
-    </body>
+    <script type="text/javascript" src="extern.js"></script>
+</head>
+<body>
+</body>
 </html>

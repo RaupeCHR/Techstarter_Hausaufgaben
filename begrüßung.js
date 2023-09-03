@@ -9,3 +9,4 @@ rl.question('Wie ist dein Name? ', (answer) => {
   console.log('Hallo ' + answer + '! Herzlich Willkommen!');
   rl.close();
 });
+
