@@ -13,10 +13,10 @@ Du sollst ein kleines Programm schreiben, das es einem Benutzer ermöglicht, per
 const tagbuchEintraege = [];
 
 /*2. Definiere eine Funktion namens `neuerEintragHinzufuegen`, die den Benutzer nach einem Eintragstitel und dem eigentlichen Text des Eintrags fragt. Erstelle ein Objekt mit diesen Informationen und füge es dem `tagebuchEintraege`-Array hinzu. */
-function neuerEintragHinzufuegen(Eintragstitel, Eintrag) {
+function neuerEintragHinzufuegen() {
     const titel = prompt("Bitte gib den Titel des Eintrags ein:");
     const text = prompt("bitte gib deinen Haupttext ein:");
-    const eintarg = {
+    const Eintrag = {
         Titel: titel,
         Text: text
     };
