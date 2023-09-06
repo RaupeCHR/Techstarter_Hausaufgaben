@@ -39,15 +39,18 @@ function  compairCars(auto1,auto2){
     return (
         auto1.marke ===  auto2.marke &&
         auto1.modell === auto2.modell &&
-        auto1.baujahr !== auto2.baujahr
+        auto1.baujahr === auto2.baujahr
     );
 }
 
 
 auto1 = new Auto("BMW","320","1989");
 auto2 = new Auto("Audi","A3","1960");
+auto3 = new Auto("BMW","320","1989");
 
-auto1.marke = "hyundai";
-auto2.marke = "Ford"
 
-console.log(auto1.compairCars(auto2));
+
+console.log(
+    auto1.compairCars(auto2),
+    auto1.compairCars(auto3)
+    );
