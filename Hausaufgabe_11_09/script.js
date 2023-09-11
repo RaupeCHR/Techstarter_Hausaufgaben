@@ -15,15 +15,15 @@ document.getElementById("myForm").addEventListener("submit", function(event) {
     }
   
     // Überprüfen, ob die E-Mail-Adresse gültig ist
-    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    let emailtest = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailtest.test(email)) {
       alert("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
       return;
     }
   
     // Überprüfen, ob das Geburtsdatum im richtigen Format ist (YYYY-MM-DD)
-    let dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dateRegex.test(geburtsdatum)) {
+    let datetest = /^\d{4}-\d{2}-\d{2}$/;
+    if (!datetest.test(geburtsdatum)) {
       alert("Bitte geben Sie das Geburtsdatum im Format YYYY-MM-DD ein.");
       return;
     }
