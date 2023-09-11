@@ -29,7 +29,7 @@ document.getElementById("myForm").addEventListener("submit", function(event) {
     }
   
     // Erfolgsmeldung anzeigen und eingegebene Informationen anzeigen
-    alert("Formular erfolgreich abgesendet!");
+    alert("Formular erfolgreich gesendet!");
     console.log("Vorname: " + vorname);
     console.log("Nachname: " + nachname);
     console.log("E-Mail: " + email);
