@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Todo App</title>
+    <style>
+        .delete-button {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Meine Todo App</h1>
+    <div class="todo-list">
+        <ul id="todoList">
+            <li>
+                <span>Einkaufen gehen</span>
+                <span class="delete-button" onclick="deleteTodoItem(this)">(x)</span>
+            </li>
+            <li>
+                <span>Auto waschen gehen</span>
+                <span class="delete-button" onclick="deleteTodoItem(this)">(x)</span>
+            </li>
+        </ul>
+    </div>
+    
+    <form onsubmit="event.preventDefault(); addTodo()">
+        <input type="text" id="todoInput">
+        <button type="submit">Hinzufügen</button>
+    </form>
+
+    <script>
+        function addTodo() {
+            var input = document.getElementById("todoInput");
+            var todoList = document.getElementById("todoList");
+
+            var todoText = input.value;
+            var newTodo = document.createElement("li");
+            var todoSpan = document.createElement("span");
+            todoSpan.textContent = todoText;
+            var deleteButton = document.createElement("span");
+            deleteButton.className = "delete-button";
+            deleteButton.textContent = "(x)";
+            deleteButton.onclick = function() {
+                deleteTodoItem(this);
+            };
+
+            newTodo.appendChild(todoSpan);
+            newTodo.appendChild(deleteButton);
+            todoList.appendChild(newTodo);
+
+            input.value = "";
+        }
+
+        function deleteTodoItem(button) {
+            var listItem = button.parentNode;
+            listItem.parentNode.removeChild(listItem);
+        }
+    </script>
+</body>
+</html>
