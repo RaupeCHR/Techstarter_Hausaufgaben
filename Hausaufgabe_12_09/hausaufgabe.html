@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+  
+  <title>Farbänderung der Überschrift</title>
+  <script>
+    function changeColor() {
+      var input = document.getElementById("colorInput");
+      var heading = document.getElementById("heading");
+
+      var color = input.value;
+      heading.style.color = color;
+    }
+  </script>
+</head>
+<body>
+  <h1 id="heading">Variable Überschrift</h1>
+  <h2>bitte verwende die englische Sprache für die Farben.</h2>
+  <input type="text" id="colorInput">
+  <button onclick="changeColor()">OK</button>
+</body>
+</html>
