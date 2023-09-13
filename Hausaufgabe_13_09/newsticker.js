@@ -1,63 +1,45 @@
-const categorySelect = document.getElementById('category-select');
-        const newsContainer = document.getElementById('news-container');
-
-        function getNews(category) {
-            const apiKey = 'f5a84794114e4ea3b683bcc77aa94f4d'; // Ersetze dies durch deinen API-Schlüssel (z.B. NewsAPI)
-            const apiUrl = `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${apiKey}`;
-
-            // AJAX-Anfrage mit XMLHttpRequest
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', apiUrl, true);
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-
-                    // Nachrichtenliste leeren
-                    newsContainer.innerHTML = '';
-
-                    // Nachrichten durchlaufen und anzeigen
-                    response.articles.forEach(article => {
-                        const newsItem = document.createElement('div');
-                        newsItem.classList.add('news-item');
-
-                        const title = document.createElement('h2');
-                        title.textContent = article.title;
-
-                        const description = document.createElement('p');
-                        description.textContent = article.description;
-
-                        const link = document.createElement('a');
-                        link.href = article.url;
-                        link.textContent = 'Lesen Sie mehr';
-
-                        newsItem.appendChild(title);
-                        newsItem.appendChild(description);
-                        newsItem.appendChild(link);
-
-                        newsContainer.appendChild(newsItem);
-                    });
-                } else {
-                    console.error('Fehler beim Abrufen der Nachrichten:', xhr.status, xhr.statusText);
-                }
-            };
-
-            xhr.onerror = function () {
-                console.error('Fehler beim Netzwerkzugriff');
-            };
-
-            xhr.send();
-        }
-
-        // Nachrichten für die ausgewählte Kategorie abrufen und anzeigen
-        getNews(categorySelect.value);
-
-        // Alle 30 Sekunden Nachrichten aktualisieren
-        setInterval(() => {
-            getNews(categorySelect.value);
-        }, 30000);
-
-        // Kategorie ändern
-        categorySelect.addEventListener('change', function () {
-            getNews(categorySelect.value);
+function getNews(category) {
+    // Erstellen Sie eine AJAX-Anfrage an die Nachrichten-API
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://newsapi.org/v2/top-headlines?country=de&category=' + category + '&apiKey=0b54a21049384cccaf84d1d5de9684ca', true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        // Erfolgreiche Antwort erhalten
+        var response = JSON.parse(xhr.responseText);
+        var articles = response.articles;
+  
+        // Nachrichtencontainer leeren
+        var newsContainer = document.getElementById('news');
+        newsContainer.innerHTML = '';
+  
+        // Nachrichten anzeigen
+        articles.forEach(function(article) {
+          var title = article.title;
+          var description = article.description;
+          var url = article.url;
+  
+          var newsItem = document.createElement('div');
+          newsItem.innerHTML = '<h2>' + title + '</h2>' +
+                               '<a href="' + url + '">Lesen Sie weiter</a>';
+  
+          newsContainer.appendChild(newsItem);
         });
+      } else {
+        // Fehler bei der AJAX-Anfrage
+        console.log('Fehler beim Abrufen der Nachrichten. Statuscode: ' + xhr.status);
+      }
+    };
+    xhr.send();
+  }
+  
+  // Funktion zum Aktualisieren der Nachrichten
+  function updateNews() {
+    var category = document.getElementById('category').value;
+    getNews(category);
+  }
+  
+  // Nachrichten beim Laden der Seite abrufen
+  getNews('technology');
+  
+  // Nachrichten alle 30 Sekunden aktualisieren
+  setInterval(updateNews, 30000);
