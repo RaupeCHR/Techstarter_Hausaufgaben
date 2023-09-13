@@ -38,7 +38,6 @@ const categorySelect = document.getElementById('category-select');
                         newsContainer.appendChild(newsItem);
                     });
                 } else {
-                    console.log(xhr.status)
                     console.error('Fehler beim Abrufen der Nachrichten:', xhr.status, xhr.statusText);
                 }
             };
