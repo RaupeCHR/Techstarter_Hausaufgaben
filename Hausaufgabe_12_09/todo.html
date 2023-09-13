@@ -21,11 +21,11 @@
 
     <script>
         function addTodo() {
-            var input = document.getElementById("todoInput");
-            var todoList = document.querySelector(".todo-list ul");
+            let input = document.getElementById("todoInput");
+            let todoList = document.querySelector(".todo-list ul");
 
-            var todoText = input.value;
-            var newTodo = document.createElement("li");
+            let todoText = input.value;
+            let newTodo = document.createElement("li");
             newTodo.textContent = todoText;
 
             todoList.appendChild(newTodo);

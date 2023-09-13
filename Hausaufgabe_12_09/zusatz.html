@@ -33,14 +33,14 @@
 
     <script>
         function addTodo() {
-            var input = document.getElementById("todoInput");
-            var todoList = document.getElementById("todoList");
+            let input = document.getElementById("todoInput");
+            let todoList = document.getElementById("todoList");
 
-            var todoText = input.value;
-            var newTodo = document.createElement("li");
-            var todoSpan = document.createElement("span");
+            let todoText = input.value;
+            let newTodo = document.createElement("li");
+            let todoSpan = document.createElement("span");
             todoSpan.textContent = todoText;
-            var deleteButton = document.createElement("span");
+            let deleteButton = document.createElement("span");
             deleteButton.className = "delete-button";
             deleteButton.textContent = "(x)";
             deleteButton.onclick = function() {
@@ -55,7 +55,7 @@
         }
 
         function deleteTodoItem(button) {
-            var listItem = button.parentNode;
+            let listItem = button.parentNode;
             listItem.parentNode.removeChild(listItem);
         }
     </script>
