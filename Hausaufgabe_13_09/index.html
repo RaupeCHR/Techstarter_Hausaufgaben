@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <title>Nachrichten</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nachrichten</title>
 </head>
 <body>
-  <h1>Newticker</h1>
-  <select id="category">
-    <option value="technology">Technologie</option>
-    <option value="sports">Sport</option>
-    <option value="entertainment">Unterhaltung</option>
-  </select>
-  <ul id="newsList"></ul>
+    <h1>Aktuelle Nachrichten</h1>
+    
+    <label for="category-select">Wähle eine Kategorie:</label>
+    <select id="category-select">
+        <option value="technology">Technologie</option>
+        <option value="sports">Sport</option>
+        <option value="entertainment">Unterhaltung</option>
+    </select>
 
-  <script src="script.js"></script>
+    <div id="news-container">
+        <!-- Hier werden die Nachrichten angezeigt -->
+    </div>
+
+    <script src="newsticker.js"></script>
 </body>
 </html>

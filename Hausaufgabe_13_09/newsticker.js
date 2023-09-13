@@ -1,52 +1,64 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var categorySelect = document.getElementById("category");
-    var newsList = document.getElementById("newsList");
-  
-    function fetchNews(category) {
-      var apiKey = "YOUR_API_KEY"; // Replace with your API key
-      var url = "https://newsapi.org/v2/top-headlines?category=" + category + "&apiKey=" + apiKey;
-  
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          var response = JSON.parse(xhr.responseText);
-          displayNews(response.articles);
+const categorySelect = document.getElementById('category-select');
+        const newsContainer = document.getElementById('news-container');
+
+        function getNews(category) {
+            const apiKey = 'f5a84794114e4ea3b683bcc77aa94f4d'; // Ersetze dies durch deinen API-Schlüssel (z.B. NewsAPI)
+            const apiUrl = `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${apiKey}`;
+
+            // AJAX-Anfrage mit XMLHttpRequest
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', apiUrl, true);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+
+                    // Nachrichtenliste leeren
+                    newsContainer.innerHTML = '';
+
+                    // Nachrichten durchlaufen und anzeigen
+                    response.articles.forEach(article => {
+                        const newsItem = document.createElement('div');
+                        newsItem.classList.add('news-item');
+
+                        const title = document.createElement('h2');
+                        title.textContent = article.title;
+
+                        const description = document.createElement('p');
+                        description.textContent = article.description;
+
+                        const link = document.createElement('a');
+                        link.href = article.url;
+                        link.textContent = 'Lesen Sie mehr';
+
+                        newsItem.appendChild(title);
+                        newsItem.appendChild(description);
+                        newsItem.appendChild(link);
+
+                        newsContainer.appendChild(newsItem);
+                    });
+                } else {
+                    console.log(xhr.status)
+                    console.error('Fehler beim Abrufen der Nachrichten:', xhr.status, xhr.statusText);
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('Fehler beim Netzwerkzugriff');
+            };
+
+            xhr.send();
         }
-      };
-      xhr.open('GET', url, true);
-      xhr.send();
-    }
-  
-    function displayNews(articles) {
-      newsList.innerHTML = "";
-      articles.forEach(function(article) {
-        var li = document.createElement("li");
-        var title = document.createElement("h2");
-        title.textContent = article.title;
-        var description = document.createElement("p");
-        description.textContent = article.description;
-        var link = document.createElement("a");
-        link.href = article.url;
-        link.textContent = "Weiterlesen";
-  
-        li.appendChild(title);
-        li.appendChild(description);
-        li.appendChild(link);
-        newsList.appendChild(li);
-      });
-    }
-  
-    function updateNews() {
-      var category = categorySelect.value;
-      fetchNews(category);
-    }
-  
-    categorySelect.addEventListener("change", updateNews);
-  
-    // Initial news fetch
-    updateNews();
-  
-    // Automatic update every 30 seconds
-    setInterval(updateNews, 30000);
-  });
-  
+
+        // Nachrichten für die ausgewählte Kategorie abrufen und anzeigen
+        getNews(categorySelect.value);
+
+        // Alle 30 Sekunden Nachrichten aktualisieren
+        setInterval(() => {
+            getNews(categorySelect.value);
+        }, 30000);
+
+        // Kategorie ändern
+        categorySelect.addEventListener('change', function () {
+            getNews(categorySelect.value);
+        });
