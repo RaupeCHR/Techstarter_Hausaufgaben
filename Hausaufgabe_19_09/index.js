@@ -5,7 +5,12 @@ const port = 3000;
 
 
 app.get('/', (req, res) => {
-  res.send('Herzlich Willkommen zu den Hausaufgaben von Christoph Raupach!');
+  res.send(`
+  <h1>Herzlich Willkommen zu den Hausaufgaben von Christoph Raupach!</h1>
+  <a href="/">Home</a>
+  <a href="/oldhtml">To Do List</a>
+  <a href="/cat/:says">Catpictures</a>
+            `);
 });
 
 app.get('/oldhtml', (req, res) => {
