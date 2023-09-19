@@ -1,6 +1,6 @@
 const figlet = require('figlet');
 
-const message = 'Hallo, Welt!';
+const message = 'Geiler Scheiss man!';
 
 figlet.text(message, {
   font: 'Dancing Font',
