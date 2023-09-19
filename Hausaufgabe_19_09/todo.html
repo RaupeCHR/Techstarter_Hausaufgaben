@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Todo App</title>
+</head>
+<body>
+    <h1>Meine Todo App</h1>
+    <div class="todo-list">
+        <ul>
+            <li>Einkaufen gehen</li>
+            <li>Auto waschen gehen</li>
+        </ul>
+    </div>
+    
+    <form onsubmit="event.preventDefault(); addTodo()">
+        <input type="text" id="todoInput">
+        <button type="submit">Hinzufügen</button>
+    </form>
+
+    <script>
+        function addTodo() {
+            let input = document.getElementById("todoInput");
+            let todoList = document.querySelector(".todo-list ul");
+
+            let todoText = input.value;
+            let newTodo = document.createElement("li");
+            newTodo.textContent = todoText;
+
+            todoList.appendChild(newTodo);
+
+            input.value = "";
+        }
+    </script>
+</body>
+</html>
