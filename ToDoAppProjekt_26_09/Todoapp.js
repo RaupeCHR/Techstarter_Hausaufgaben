@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import fs from "fs/promises"
 
 const app = express();
 const port = 3000;
@@ -28,6 +29,7 @@ const users = [
 ];
 
 const userTodoLists = {};
+const todoFilePath = "todo.json";
 
 app.get('/', (req, res) => {
     res.send(form);
@@ -116,27 +118,46 @@ app.post("/login", (req, res) => {
     res.send(`Login fehlgeschlagen`);
 });
 
-app.post('/addtodo', (req, res) => {
-    const { name, title, description } = req.body;
+app.get('/', (req, res) => {
+    res.send(form);
+});
+
+// ... (Die anderen Routen bleiben gleich)
+
+app.post('/addtodo', async (req, res) => {
+    const { name, title, description, dueDate, status } = req.body;
 
     if (!userTodoLists[name]) {
         userTodoLists[name] = [];
     }
 
-    // Erstelle einen neuen Todo-Eintrag mit Titel und optionaler Beschreibung
+    // Erstelle einen neuen Todo-Eintrag mit Titel, Beschreibung, Fälligkeitsdatum und Status
     const newTodo = {
         title,
         description: description || "",
+        dueDate: dueDate || "",
+        status: status || "To-Do" // Standardmäßig als "To-Do" markieren
     };
 
+    // Füge den neuen Eintrag zur Aufgabenliste hinzu
     userTodoLists[name].push(newTodo);
+
+    // Speichere die Aufgabenliste in der JSON-Datei
+    await fs.writeFile(todoFilePath, JSON.stringify(userTodoLists));
 
     // Die Todo-Liste auf derselben Seite aktualisieren und zurücksenden
     const todoList = userTodoLists[name];
     const todoListHtml = todoList.map(item => `
         <li>
-            <strong>${item.title}</strong>
-            ${item.description ? `<br>${item.description}` : ""}
+            <strong>${item.title}</strong><br>
+            Description: ${item.description}<br>
+            Due Date: ${item.dueDate}<br>
+            Status: ${item.status}<br>
+            <form method="post" action="/markcompleted">
+                <input type="hidden" name="name" value="${name}">
+                <input type="hidden" name="todoId" value="${item.id}">
+                <button type="submit">Als erledigt markieren</button>
+            </form>
         </li>
     `).join("");
     
@@ -148,6 +169,10 @@ app.post('/addtodo', (req, res) => {
             <input name="title" type="text" placeholder="Titel" required>
             <label for="description">Beschreibung:</label>
             <input name="description" type="text" placeholder="Beschreibung (optional)">
+            <label for="dueDate">Fälligkeitsdatum:</label>
+            <input name="dueDate" type="text" placeholder="Fälligkeitsdatum">
+            <label for="status">Status:</label>
+            <input name="status" type="text" placeholder="Status">
             <button type="submit">Hinzufügen</button>
         </form>
         <ul>${todoListHtml}</ul>
@@ -156,13 +181,31 @@ app.post('/addtodo', (req, res) => {
     res.send(`Eintrag erfolgreich hinzugefügt: ${userTodoList}`);
 });
 
-app.get("/todolist", (req, res) => {
-    const { name } = req.query;
-    const todoList = userTodoLists[name] || [];
+app.post("/markcompleted", async (req, res) => {
+    const { name, todoId } = req.body;
+
+    // Aktualisiere den Status des Todo-Eintrags auf "Erledigt"
+    const todoList = userTodoLists[name];
+    const todo = todoList.find(item => item.id === todoId);
+    if (todo) {
+        todo.status = "Erledigt";
+
+        // Speichere die Aufgabenliste in der JSON-Datei
+        await fs.writeFile(todoFilePath, JSON.stringify(userTodoLists));
+    }
+
+    // Aktualisiere die lokale Todo-Liste
     const todoListHtml = todoList.map(item => `
         <li>
-            <strong>${item.title}</strong>
-            ${item.description ? `<br>${item.description}` : ""}
+            <strong>${item.title}</strong><br>
+            Description: ${item.description}<br>
+            Due Date: ${item.dueDate}<br>
+            Status: ${item.status}<br>
+            <form method="post" action="/markcompleted">
+                <input type="hidden" name="name" value="${name}">
+                <input type="hidden" name="todoId" value="${item.id}">
+                <button type="submit">Als erledigt markieren</button>
+            </form>
         </li>
     `).join("");
 
@@ -174,12 +217,16 @@ app.get("/todolist", (req, res) => {
             <input name="title" type="text" placeholder="Titel" required>
             <label for="description">Beschreibung:</label>
             <input name="description" type="text" placeholder="Beschreibung (optional)">
+            <label for="dueDate">Fälligkeitsdatum:</label>
+            <input name="dueDate" type="text" placeholder="Fälligkeitsdatum">
+            <label for="status">Status:</label>
+            <input name="status" type="text" placeholder="Status">
             <button type="submit">Hinzufügen</button>
         </form>
         <ul>${todoListHtml}</ul>
     `;
 
-    res.send(userTodoList);
+    res.send(`Eintrag erfolgreich als erledigt markiert: ${userTodoList}`);
 });
 
 app.listen(port, () => {
