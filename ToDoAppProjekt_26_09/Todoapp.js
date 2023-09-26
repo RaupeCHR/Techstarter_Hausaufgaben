@@ -15,7 +15,6 @@ const dataPath = path.join(__dirname, 'data.json')
 
 // Middleware zum Parsen von form-daten
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.static("public"))
 
 // Daten aus der JSON-Datei lesen
 async function readData() {
@@ -39,7 +38,7 @@ app.get('/', (req, res) => {
         padding: 0;
     }
     .container {
-        width: 50%;
+        width: 70%;
         margin: auto;
     }
     header {
@@ -62,7 +61,7 @@ app.get('/', (req, res) => {
         overflow: hidden;
     }
     header li {
-        float: left;
+        float: right;
         display: block;
         padding: 0 20px;
         font-size: 16px;
@@ -103,18 +102,22 @@ app.get('/', (req, res) => {
         color: #888;
     }
 </style>
+
     <div class="container">
-    <h1>To Do App Enrico Anna Christoph</h1>
-    <form method="post" action="/login" class="login-form">
+    <header>
+        <h1 id="branding">To Do App Enrico Anna Christoph</h1>
+    </header>
+    </br>
+    <form method="post" action="/login" id="task-input">
         <label for="name">Name:</label>
-        <input name="name" type="text" class="input-field">
+        <input name="name" type="text">
         <label for="pw">Passwort:</label>
-        <input name="pw" type="password" class="input-field">
-        <button type="submit" class="btn login-btn">Login</button>
+        <input name="pw" type="password">
+        <button type="submit">Login</button>
     </form>
     <br>
-    <form method="get" action="/register" class="register-form">
-        <button type="submit" class="btn register-btn">Zur Registrierung</button>
+    <form method="get" action="/register">
+        <button type="submit">Zur Registrierung</button>
     </form>
 </div>
     `
@@ -132,7 +135,7 @@ app.get("/register", (req, res) => {
         padding: 0;
     }
     .container {
-        width: 50%;
+        width: 70%;
         margin: auto;
     }
     header {
@@ -196,17 +199,21 @@ app.get("/register", (req, res) => {
         color: #888;
     }
 </style>
-    <h1 class="form-title">Registrierung</h1>
-    <form method="post" action="/" class="registration-form">
-        <label for="name" class="form-label">Name:</label>
-        <input name="name" type="text" class="form-input">
-        <label for="pw" class="form-label">Passwort:</label>
-        <input name="pw" type="password" class="form-input">
-        <button type="submit" class="form-button">Registrieren</button>
-    </form>
-    <br>
-    <form method="get" action="/" class="register-form">
-        <button type="submit" class="btn register-btn">Zurück zum Login</button>
+        <div class="container">
+        <header>
+        <h1>Registrierung</h1>
+        </header>
+        </br>
+        <form method="post" action="/register">
+            <label for="name">Name:</label>
+            <input name="name" type="text">
+            <label for="pw">Passwort:</label>
+            <input name="pw" type="password">
+            <button type="submit">Registrieren</button>
+        </form>
+        <br>
+        <form method="get" action="/">
+        <button type="submit">Zurück zum Login</button>
     </form>
     `
     res.send(registerForm)
@@ -314,7 +321,7 @@ function renderTodoList(res, name, data) {
         padding: 0;
     }
     .container {
-        width: 50%;
+        width: 70%;
         margin: auto;
     }
     header {
@@ -378,17 +385,17 @@ function renderTodoList(res, name, data) {
         color: #888;
     }
 </style>
-    <li class="todo-item">
-    <strong>${item.title}</strong> - Kategorie: ${item.category}
-    ${item.description ? `<br>${item.description}` : ""}
-    ${item.dueDate ? `<br>Fällig am: ${item.dueDate}` : ""}
-    <br>Status: ${item.status}
-    <form method="post" action="/togglestatus">
-        <input type="hidden" name="name" value="${name}">
-        <input type="hidden" name="index" value="${index}">
-        <button type="submit">Status ändern</button>
-    </form>
-</li>
+        <li>
+            <strong>${item.title}</strong> - Kategorie: ${item.category}
+            ${item.description ? `<br>${item.description}` : ""}
+            ${item.dueDate ? `<br>Fällig am: ${item.dueDate}` : ""}
+            <br>Status: ${item.status}
+            <form method="post" action="/togglestatus">
+                <input type="hidden" name="name" value="${name}">
+                <input type="hidden" name="index" value="${index}">
+                <button type="submit">Status ändern</button>
+            </form>
+        </li>
     `).join("")
 
     const userTodoList = `
@@ -400,7 +407,7 @@ function renderTodoList(res, name, data) {
         padding: 0;
     }
     .container {
-        width: 50%;
+        width: 70%;
         margin: auto;
     }
     header {
@@ -464,33 +471,34 @@ function renderTodoList(res, name, data) {
         color: #888;
     }
 </style>
-    <div class="todo-list-container">
-    <h2>To-Do-Liste für ${name}</h2>
-    <form class="add-todo-form" method="post" action="/addtodo">
-        <input type="hidden" name="name" value="${name}">
-        <label for="title">Titel:</label>
-        <input name="title" type="text" placeholder="Titel" required>
-        <label for="description">Beschreibung:</label>
-        <input name="description" type="text" placeholder="Beschreibung (optional)">
-        <label for="dueDate">Fälligkeitsdatum:</label>
-        <input name="dueDate" type="date">
-        <label for="category">Kategorie:</label>
-        <input name="category" type="text" placeholder="Kategorie (optional)">
-        <label for="status">Status:</label>
-        <select name="status">
-            <option value="Offen">Offen</option>
-            <option value="Erledigt">Erledigt</option>
-        </select>
-        <button type="submit">Hinzufügen</button>
-    </form>
-    <form class="search-todo-form" method="post" action="/searchtodo">
-        <input type="hidden" name="name" value="${name}">
-        <label for="query">Suche:</label>
-        <input name="query" type="text" placeholder="Suche">
-        <button type="submit">Suchen</button>
-    </form>
-</div>
-
+<div class="container">
+<header>
+        <h2>To-Do-Liste für ${name}</h2>
+        </header>
+        </br>
+        <form method="post" action="/addtodo">
+            <input type="hidden" name="name" value="${name}">
+            <label for="title">Titel:</label>
+            <input name="title" type="text" placeholder="Titel" required>
+            <label for="description">Beschreibung:</label>
+            <input name="description" type="text" placeholder="Beschreibung (optional)">
+            <label for="dueDate">Fälligkeitsdatum:</label>
+            <input name="dueDate" type="date">
+            <label for="category">Kategorie:</label>
+            <input name="category" type="text" placeholder="Kategorie (optional)">
+            <label for="status">Status:</label>
+            <select name="status">
+                <option value="Offen">Offen</option>
+                <option value="Erledigt">Erledigt</option>
+            </select>
+            <button type="submit">Hinzufügen</button>
+        </form>
+        <form method="post" action="/searchtodo">
+            <input type="hidden" name="name" value="${name}">
+            <label for="query">Suche:</label>
+            <input name="query" type="text" placeholder="Suche">
+            <button type="submit">Suchen</button>
+        </form>
         <ul>${todoListHtml}</ul>
     `
     res.send(userTodoList)

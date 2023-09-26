@@ -7,6 +7,14 @@
     {
       "name": "Christoph",
       "passwort": "$2a$10$Mand3i9GT5qHmu5XRX6yYeDGu4v0Yp6SaH66RbK87YHKpQraDgbcu"
+    },
+    {
+      "name": "Dimi ",
+      "passwort": "$2a$10$1K3fwKHsWy/qUH0es49KP.1buuLZiFSy7SW94lxRGnU0uh4A6Rcde"
+    },
+    {
+      "name": "Abi",
+      "passwort": "$2a$10$ReBkVgK1HOfpi8hKlsQvu.REZcHZoZldn.Gwa/orzvXUA6aSbEbhq"
     }
   ],
   "userTodoLists": {
@@ -49,12 +57,35 @@
     ],
     "Christoph": [
       {
+        "title": "Arbeit",
+        "description": "Chef eine rein hauen",
+        "dueDate": "2023-09-27",
+        "category": "Gesundheit",
+        "status": "Offen"
+      },
+      {
         "title": "sport",
         "description": "abschluss ",
         "dueDate": "2023-09-28",
         "category": "Allgemein",
         "status": "Offen"
+      },
+      {
+        "title": "Freizeit",
+        "description": "Gassi gehen",
+        "dueDate": "2023-09-29",
+        "category": "Gesundheit",
+        "status": "Offen"
+      },
+      {
+        "title": "Medizin",
+        "description": "Prostata kontrolle",
+        "dueDate": "2023-09-30",
+        "category": "Gesundheit",
+        "status": "Offen"
       }
-    ]
+    ],
+    "Dimi ": [],
+    "Abi": []
   }
 }
