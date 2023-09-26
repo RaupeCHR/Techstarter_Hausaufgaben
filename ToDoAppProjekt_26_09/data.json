@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "name": "Enrico",
+      "passwort": "$2a$10$3OTE/8TJlfVxofmIp4J40ui8tXsGPGU9wzr9QM1rP7KVbqJ64/9Ma"
+    },
+    {
+      "name": "Christoph",
+      "passwort": "$2a$10$Mand3i9GT5qHmu5XRX6yYeDGu4v0Yp6SaH66RbK87YHKpQraDgbcu"
+    }
+  ],
+  "userTodoLists": {
+    "Enrico": [
+      {
+        "title": "rea",
+        "description": "raerea",
+        "status": "Erledigt"
+      },
+      {
+        "title": "huu",
+        "description": "fgdh",
+        "dueDate": "2023-09-26",
+        "status": "Offen"
+      },
+      {
+        "title": "fgsdgsdf",
+        "description": "gfsdgsd",
+        "dueDate": "2023-09-13",
+        "status": "Erledigt"
+      },
+      {
+        "title": "trewt",
+        "description": "terwt",
+        "dueDate": "2023-09-05",
+        "status": "Offen"
+      },
+      {
+        "title": "asdff",
+        "description": "asdfasd",
+        "dueDate": "2023-09-27",
+        "status": "Offen"
+      },
+      {
+        "title": "asdff",
+        "description": "sdfgasdg",
+        "dueDate": "2023-09-20",
+        "status": "Erledigt"
+      }
+    ],
+    "Christoph": [
+      {
+        "title": "sport",
+        "description": "abschluss ",
+        "dueDate": "2023-09-28",
+        "category": "Allgemein",
+        "status": "Offen"
+      }
+    ]
+  }
+}

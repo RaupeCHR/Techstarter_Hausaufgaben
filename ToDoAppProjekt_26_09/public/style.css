@@ -3,16 +3,16 @@
     text-align: center;
     margin: 20px;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: #36d131;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
 }
 
-/* Stile für das Login-Formular */
+/* Stile für das Login-Formular, Registrierungsformular und To-Do-Formular */
 .login-form, .registration-form, .todo-form {
-    background-color: #fff;
+    background-color: #1ba037;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
@@ -30,7 +30,7 @@
     font-weight: bold;
 }
 
-.form-input, .todo-input {
+.form-input, .todo-input, .add-todo-form select, .search-todo-form select {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -39,7 +39,7 @@
     font-size: 16px;
 }
 
-.form-button, .todo-button {
+.form-button, .todo-button, .register-btn, .login-btn, .add-todo-form button, .search-todo-form button {
     background-color: #007bff;
     color: white;
     padding: 10px 20px;
@@ -68,36 +68,98 @@
     margin-bottom: 20px;
 }
 
-.todo-list, .todo-item {
+.todo-list, .todo-item, .add-todo-form, .search-todo-form {
     list-style-type: none;
-    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 10px;
 }
 
-.todo-item-title {
+.todo-item-title, .todo-item strong {
     font-weight: bold;
     font-size: 18px;
 }
 
-.todo-item-description, .todo-item-due-date, .todo-item-status {
+.todo-item-description, .todo-item-due-date, .todo-item-status, .todo-item-category,
+.add-todo-form input[name="title"], .search-todo-form input[name="query"], .add-todo-form input[name="description"], .add-todo-form input[name="category"] {
     font-size: 16px;
     color: #555;
     margin-top: 5px;
 }
 
-/* Stile für alle Buttons */
-.todo-button, .form-button, .register-btn, .login-btn {
+/* Stile für den "Status ändern" Button im ToDo-Listenelement und im Statusänderungsformular */
+.toggle-status-form, .todo-item form {
+    margin-top: 10px;
+}
+
+.toggle-status-button, .todo-item button {
     background-color: #007bff;
     color: white;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
+    margin-top: 10px;
 }
 
-.todo-button:hover, .form-button:hover, .register-btn:hover, .login-btn:hover {
+.toggle-status-button:hover, .todo-item button:hover {
     background-color: #0056b3;
+}
+
+/* Stile für ToDo-Listenelemente */
+.todo-item, .todo-list-container {
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.todo-list-container {
+    text-align: left; /* Text linksbündig ausrichten */
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Hier können Sie Ihre CSS-Regeln für kleine Bildschirme definieren */
+    .container {
+        margin: 10px;
+        padding: 10px;
+    }
+
+    .form-title {
+        font-size: 20px;
+    }
+
+    .form-label {
+        font-size: 14px;
+    }
+
+    .form-input, .todo-input {
+        font-size: 14px;
+    }
+
+    .form-button, .todo-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .form-link {
+        font-size: 14px;
+    }
+
+    .todo-list-header, .todo-list-title {
+        font-size: 20px;
+    }
+
+    .todo-list, .todo-item {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+
+    .todo-item-title {
+        font-size: 16px;
+    }
+
+    .todo-item-description, .todo-item-due-date, .todo-item-status {
+        font-size: 12px;
+    }
 }

@@ -1,15 +1,109 @@
-import express from "express";
-import bodyParser from "body-parser";
-import fs from "fs/promises"
+import express from 'express'
+import bodyParser from 'body-parser'
+import fs from 'fs/promises'
+import path from 'path'
+import bcrypt from 'bcryptjs'
+import { fileURLToPath } from 'url'
 
-const app = express();
-const port = 3000;
+// Erhalte den Pfad des aktuellen Moduls
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+const app = express()
+const port = 3000
+const dataPath = path.join(__dirname, 'data.json')
 
-const form = `
-<div class="container">
+// Middleware zum Parsen von form-daten
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static("public"))
+
+// Daten aus der JSON-Datei lesen
+async function readData() {
+    const rawData = await fs.readFile(dataPath, 'utf-8')
+    return JSON.parse(rawData)
+}
+
+// Daten in die JSON-Datei schreiben
+async function writeData(data) {
+    await fs.writeFile(dataPath, JSON.stringify(data, null, 2), 'utf-8')
+}
+
+// Hauptlogin-Seite
+app.get('/', (req, res) => {
+    const form = `
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 50%;
+        margin: auto;
+    }
+    header {
+        background: #50b3a2;
+        color: #ffffff;
+        padding-top: 30px;
+        min-height: 70px;
+        border-bottom: #bbb 1px solid;
+    }
+    header a {
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 16px;
+    }
+    header ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        overflow: hidden;
+    }
+    header li {
+        float: left;
+        display: block;
+        padding: 0 20px;
+        font-size: 16px;
+    }
+    header #branding {
+        float: left;
+    }
+    header #branding h1 {
+        margin: 0;
+    }
+    header nav {
+        float: right;
+        margin-top: 10px;
+    }
+    header .highlight, header .current a {
+        color: #e8491d;
+        font-weight: bold;
+    }
+    header a:hover {
+        color: #ffffff;
+        font-weight: bold;
+    }
+    #task-input {
+        margin-bottom: 20px;
+    }
+    ul {
+        padding: 0;
+    }
+    li {
+        list-style: none;
+        background: #fff;
+        margin-bottom: 5px;
+        padding: 10px;
+        cursor: pointer;
+    }
+    li.done {
+        text-decoration: line-through;
+        color: #888;
+    }
+</style>
+    <div class="container">
     <h1>To Do App Enrico Anna Christoph</h1>
     <form method="post" action="/login" class="login-form">
         <label for="name">Name:</label>
@@ -23,226 +117,385 @@ const form = `
         <button type="submit" class="btn register-btn">Zur Registrierung</button>
     </form>
 </div>
-`;
+    `
+    res.send(form)
+})
 
-const users = [
-    { name: "Christoph", passwort: "123" },
-    { name: "Enrico", passwort: "456" },
-    { name: "Anna", passwort: "789" }
-];
-
-const userTodoLists = {};
-const todoFilePath = "todo.json";
-
-app.get('/', (req, res) => {
-    res.send(form);
-});
-
+// Registrierungsseite
 app.get("/register", (req, res) => {
     const registerForm = `
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 50%;
+        margin: auto;
+    }
+    header {
+        background: #50b3a2;
+        color: #ffffff;
+        padding-top: 30px;
+        min-height: 70px;
+        border-bottom: #bbb 1px solid;
+    }
+    header a {
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 16px;
+    }
+    header ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        overflow: hidden;
+    }
+    header li {
+        float: left;
+        display: block;
+        padding: 0 20px;
+        font-size: 16px;
+    }
+    header #branding {
+        float: left;
+    }
+    header #branding h1 {
+        margin: 0;
+    }
+    header nav {
+        float: right;
+        margin-top: 10px;
+    }
+    header .highlight, header .current a {
+        color: #e8491d;
+        font-weight: bold;
+    }
+    header a:hover {
+        color: #ffffff;
+        font-weight: bold;
+    }
+    #task-input {
+        margin-bottom: 20px;
+    }
+    ul {
+        padding: 0;
+    }
+    li {
+        list-style: none;
+        background: #fff;
+        margin-bottom: 5px;
+        padding: 10px;
+        cursor: pointer;
+    }
+    li.done {
+        text-decoration: line-through;
+        color: #888;
+    }
+</style>
     <h1 class="form-title">Registrierung</h1>
-<form method="post" action="/register" class="registration-form">
-    <label for="name" class="form-label">Name:</label>
-    <input name="name" type="text" class="form-input">
-    <label for="pw" class="form-label">Passwort:</label>
-    <input name="pw" type="password" class="form-input">
-    <button type="submit" class="form-button">Registrieren</button>
-</form>
-<br>
-<a href="/" class="form-link">Zurück zum Login</a>
-    `;
-    res.send(registerForm);
-});
+    <form method="post" action="/" class="registration-form">
+        <label for="name" class="form-label">Name:</label>
+        <input name="name" type="text" class="form-input">
+        <label for="pw" class="form-label">Passwort:</label>
+        <input name="pw" type="password" class="form-input">
+        <button type="submit" class="form-button">Registrieren</button>
+    </form>
+    <br>
+    <form method="get" action="/" class="register-form">
+        <button type="submit" class="btn register-btn">Zurück zum Login</button>
+    </form>
+    `
+    res.send(registerForm)
+})
 
-app.get("/login", (req, res) => {
-    res.send(`
-    <h1 class="form-title">Login</h1>
-<form method="post" action="/login" class="login-form">
-    <label for="name" class="form-label">Name:</label>
-    <input name="name" type="text" class="form-input">
-    <label for="pw" class="form-label">Passwort:</label>
-    <input name="pw" type="password" class="form-input">
-    <button type="submit" class="form-button">Einloggen</button>
-</form>
-<br>
-<a href="/" class="form-link">Zurück zum Login</a>
-    `);
-});
-
-app.post("/register", (req, res) => {
-    const { name, pw } = req.body;
-
-    if (!name || !pw) {
-        res.send("Registrierung fehlgeschlagen. Bitte geben Sie einen Benutzernamen und ein Passwort ein.");
-        return;
+app.post("/register", async (req, res) => {
+    const { name, pw } = req.body
+    const hashedPassword = await bcrypt.hash(pw, 10)
+    const data = await readData()
+    if (data.users.some(user => user.name === name)) {
+        res.send("Registrierung fehlgeschlagen. Dieser Benutzername existiert bereits.")
+        return
     }
+    data.users.push({ name, passwort: hashedPassword })
+    data.userTodoLists[name] = []
+    await writeData(data)
+    res.redirect(`/todolist?name=${name}`)
+})
 
-    // Überprüfen, ob der Benutzer bereits existiert
-    for (let i = 0; i < users.length; i++) {
-        if (name === users[i].name) {
-            res.send("Registrierung fehlgeschlagen. Dieser Benutzername existiert bereits.");
-            return;
-        }
+app.post("/login", async (req, res) => {
+    const { name, pw } = req.body
+    const data = await readData()
+    const user = data.users.find(u => u.name === name)
+    if (user && await bcrypt.compare(pw, user.passwort)) {
+        renderTodoList(res, name, data)
+        return
     }
+    res.send("Login fehlgeschlagen")
+})
 
-    // Neuen Benutzer hinzufügen
-    users.push({ name, passwort: pw });
-    userTodoLists[name] = [];
-    res.redirect(`/todolist?name=${name}`);
-});
-
-app.post("/login", (req, res) => {
-    const { name, pw } = req.body;
-
-    for (let i = 0; i < users.length; i++) {
-        if (name === users[i].name && pw === users[i].passwort) {
-            if (!userTodoLists[name]) {
-                userTodoLists[name] = [];
-            }
-            const todoList = userTodoLists[name];
-            const todoListHtml = todoList.map(item => `<li>${item.title}: ${item.description}</li>`).join("");
-            const userTodoList = `
-            <h2 class="todo-list-header">Meine To-Do-Liste für ${name}</h2>
-            <form class="todo-form" method="post" action="/addtodo">
-                <input type="hidden" name="name" value="${name}">
-                <label for="title">Titel:</label>
-                <input class="todo-input" name="title" type="text" placeholder="Titel" required>
-                <label for="description">Beschreibung:</label>
-                <input class="todo-input" name="description" type="text" placeholder="Beschreibung (optional)">
-                <button class="todo-button" type="submit">Hinzufügen</button>
-            </form>
-                <ul>${todoListHtml}</ul>
-            `;
-            res.send(`Login erfolgreich ${userTodoList}`);
-            return;
-        }
-    }
-
-    res.send(`Login fehlgeschlagen`);
-});
-
-app.get('/', (req, res) => {
-    res.send(form);
-});
-
-// ... (Die anderen Routen bleiben gleich)
-
+// Neues Todo hinzufügen
 app.post('/addtodo', async (req, res) => {
-    const { name, title, description, dueDate, status } = req.body;
+    const { name, title, description, dueDate, category } = req.body
 
-    if (!userTodoLists[name]) {
-        userTodoLists[name] = [];
+    const data = await readData()
+
+    if (!data.userTodoLists[name]) {
+        data.userTodoLists[name] = []
     }
 
-    // Erstelle einen neuen Todo-Eintrag mit Titel, Beschreibung, Fälligkeitsdatum und Status
     const newTodo = {
         title,
         description: description || "",
         dueDate: dueDate || "",
-        status: status || "To-Do" // Standardmäßig als "To-Do" markieren
-    };
-
-    // Füge den neuen Eintrag zur Aufgabenliste hinzu
-    userTodoLists[name].push(newTodo);
-
-    // Speichere die Aufgabenliste in der JSON-Datei
-    await fs.writeFile(todoFilePath, JSON.stringify(userTodoLists));
-
-    // Die Todo-Liste auf derselben Seite aktualisieren und zurücksenden
-    const todoList = userTodoLists[name];
-    const todoListHtml = todoList.map(item => `
-    <li class="todo-item">
-        <strong class="todo-item-title">${item.title}</strong><br>
-        <span class="todo-item-description">Description: ${item.description}</span><br>
-        <span class="todo-item-due-date">Due Date: ${item.dueDate}</span><br>
-        <span class="todo-item-status">Status: ${item.status}</span><br>
-        <form class="todo-form" method="post" action="/markcompleted">
-            <input type="hidden" name="name" value="${name}">
-            <input type="hidden" name="todoId" value="${item.id}">
-            <button class="todo-button" type="submit">Als erledigt markieren</button>
-        </form>
-    </li>
-    `).join("");
-    
-    const userTodoList = `
-    <h2 class="todo-list-title">To-Do-Liste für ${name}</h2>
-    <form class="todo-form" method="post" action="/addtodo">
-        <input type="hidden" name="name" value="${name}">
-        <label for="title">Titel:</label>
-        <input class="todo-input" name="title" type="text" placeholder="Titel" required>
-        <label for="description">Beschreibung:</label>
-        <input class="todo-input" name="description" type="text" placeholder="Beschreibung (optional)">
-        <label for="dueDate">Fälligkeitsdatum:</label>
-        <input class="todo-input" name="dueDate" type="text" placeholder="Fälligkeitsdatum">
-        <label for="status">Status:</label>
-        <input class="todo-input" name="status" type="text" placeholder="Status">
-        <button class="todo-button" type="submit">Hinzufügen</button>
-    </form>
-    <ul class="todo-list">${todoListHtml}</ul>
-    `;
-
-    res.send(`Eintrag erfolgreich hinzugefügt: ${userTodoList}`);
-});
-
-app.post("/markcompleted", async (req, res) => {
-    const { name, todoId } = req.body;
-
-    // Aktualisiere den Status des Todo-Eintrags auf "Erledigt"
-    const todoList = userTodoLists[name];
-    const todo = todoList.find(item => item.id === todoId);
-    if (todo) {
-        todo.status = "Erledigt";
-
-        // Speichere die Aufgabenliste in der JSON-Datei
-        await fs.writeFile(todoFilePath, JSON.stringify(userTodoLists));
+        category: category || "Allgemein", // Default auf "Allgemein" setzen
+        status: "Offen"
     }
 
-    // Aktualisiere die lokale Todo-Liste
-    const todoListHtml = todoList.map(item => `
-        <li>
-            <strong>${item.title}</strong><br>
-            Description: ${item.description}<br>
-            Due Date: ${item.dueDate}<br>
-            Status: ${item.status}<br>
-            <form method="post" action="/markcompleted">
-                <input type="hidden" name="name" value="${name}">
-                <input type="hidden" name="todoId" value="${item.id}">
-                <button type="submit">Als erledigt markieren</button>
-            </form>
-        </li>
-    `).join("");
+    data.userTodoLists[name].push(newTodo)
+
+    // Sortiere die Todos nach Fälligkeit
+    data.userTodoLists[name].sort((a, b) => {
+        if (a.dueDate < b.dueDate) return -1
+        if (a.dueDate > b.dueDate) return 1
+        return 0
+    })
+
+    await writeData(data)
+    renderTodoList(res, name, data)
+})
+
+// Status des Todos ändern
+app.post('/togglestatus', async (req, res) => {
+    const { name, index } = req.body
+    const data = await readData()
+    const todo = data.userTodoLists[name][index]
+
+    // Toggle den Status zwischen "Offen" und "Erledigt"
+    todo.status = todo.status === "Offen" ? "Erledigt" : "Offen"
+    await writeData(data)
+
+    renderTodoList(res, name, data)
+})
+
+// To-Do-Liste eines Benutzers anzeigen
+app.get("/todolist", async (req, res) => {
+    const { name } = req.query
+    const data = await readData()
+    renderTodoList(res, name, data)
+})
+
+app.post('/searchtodo', async (req, res) => {
+    const { name, query } = req.body;
+    const data = await readData();
+
+    const filteredTodos = data.userTodoLists[name].filter(todo => {
+        return todo.title.includes(query) ||
+               (todo.description && todo.description.includes(query)) ||
+               (todo.category && todo.category.includes(query)) || // vorausgesetzt, Ihre Todo-Objekte haben ein "category" Feld
+               (todo.dueDate && todo.dueDate.includes(query));
+    });
+
+    renderTodoList(res, name, { ...data, userTodoLists: { [name]: filteredTodos } });
+});
+
+
+// Funktion zum Rendern der To-Do-Liste
+function renderTodoList(res, name, data) {
+    const todoListHtml = data.userTodoLists[name].map((item, index) => `
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 50%;
+        margin: auto;
+    }
+    header {
+        background: #50b3a2;
+        color: #ffffff;
+        padding-top: 30px;
+        min-height: 70px;
+        border-bottom: #bbb 1px solid;
+    }
+    header a {
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 16px;
+    }
+    header ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        overflow: hidden;
+    }
+    header li {
+        float: left;
+        display: block;
+        padding: 0 20px;
+        font-size: 16px;
+    }
+    header #branding {
+        float: left;
+    }
+    header #branding h1 {
+        margin: 0;
+    }
+    header nav {
+        float: right;
+        margin-top: 10px;
+    }
+    header .highlight, header .current a {
+        color: #e8491d;
+        font-weight: bold;
+    }
+    header a:hover {
+        color: #ffffff;
+        font-weight: bold;
+    }
+    #task-input {
+        margin-bottom: 20px;
+    }
+    ul {
+        padding: 0;
+    }
+    li {
+        list-style: none;
+        background: #fff;
+        margin-bottom: 5px;
+        padding: 10px;
+        cursor: pointer;
+    }
+    li.done {
+        text-decoration: line-through;
+        color: #888;
+    }
+</style>
+    <li class="todo-item">
+    <strong>${item.title}</strong> - Kategorie: ${item.category}
+    ${item.description ? `<br>${item.description}` : ""}
+    ${item.dueDate ? `<br>Fällig am: ${item.dueDate}` : ""}
+    <br>Status: ${item.status}
+    <form method="post" action="/togglestatus">
+        <input type="hidden" name="name" value="${name}">
+        <input type="hidden" name="index" value="${index}">
+        <button type="submit">Status ändern</button>
+    </form>
+</li>
+    `).join("")
 
     const userTodoList = `
-    <div class="todo-container">
-    <h2 class="todo-header">To-Do-Liste für ${name}</h2>
-    <form method="post" action="/addtodo" class="todo-form">
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 50%;
+        margin: auto;
+    }
+    header {
+        background: #50b3a2;
+        color: #ffffff;
+        padding-top: 30px;
+        min-height: 70px;
+        border-bottom: #bbb 1px solid;
+    }
+    header a {
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 16px;
+    }
+    header ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        overflow: hidden;
+    }
+    header li {
+        float: left;
+        display: block;
+        padding: 0 20px;
+        font-size: 16px;
+    }
+    header #branding {
+        float: left;
+    }
+    header #branding h1 {
+        margin: 0;
+    }
+    header nav {
+        float: right;
+        margin-top: 10px;
+    }
+    header .highlight, header .current a {
+        color: #e8491d;
+        font-weight: bold;
+    }
+    header a:hover {
+        color: #ffffff;
+        font-weight: bold;
+    }
+    #task-input {
+        margin-bottom: 20px;
+    }
+    ul {
+        padding: 0;
+    }
+    li {
+        list-style: none;
+        background: #fff;
+        margin-bottom: 5px;
+        padding: 10px;
+        cursor: pointer;
+    }
+    li.done {
+        text-decoration: line-through;
+        color: #888;
+    }
+</style>
+    <div class="todo-list-container">
+    <h2>To-Do-Liste für ${name}</h2>
+    <form class="add-todo-form" method="post" action="/addtodo">
         <input type="hidden" name="name" value="${name}">
-        <div class="todo-form-field">
-            <label for="title" class="todo-label">Titel:</label>
-            <input name="title" type="text" class="todo-input" placeholder="Titel" required>
-        </div>
-        <div class="todo-form-field">
-            <label for="description" class="todo-label">Beschreibung:</label>
-            <input name="description" type="text" class="todo-input" placeholder="Beschreibung (optional)">
-        </div>
-        <div class="todo-form-field">
-            <label for="dueDate" class="todo-label">Fälligkeitsdatum:</label>
-            <input name="dueDate" type="text" class="todo-input" placeholder="Fälligkeitsdatum">
-        </div>
-        <div class="todo-form-field">
-            <label for="status" class="todo-label">Status:</label>
-            <input name="status" type="text" class="todo-input" placeholder="Status">
-        </div>
-        <button type="submit" class="todo-button">Hinzufügen</button>
+        <label for="title">Titel:</label>
+        <input name="title" type="text" placeholder="Titel" required>
+        <label for="description">Beschreibung:</label>
+        <input name="description" type="text" placeholder="Beschreibung (optional)">
+        <label for="dueDate">Fälligkeitsdatum:</label>
+        <input name="dueDate" type="date">
+        <label for="category">Kategorie:</label>
+        <input name="category" type="text" placeholder="Kategorie (optional)">
+        <label for="status">Status:</label>
+        <select name="status">
+            <option value="Offen">Offen</option>
+            <option value="Erledigt">Erledigt</option>
+        </select>
+        <button type="submit">Hinzufügen</button>
     </form>
-    <ul class="todo-list">${todoListHtml}</ul>
+    <form class="search-todo-form" method="post" action="/searchtodo">
+        <input type="hidden" name="name" value="${name}">
+        <label for="query">Suche:</label>
+        <input name="query" type="text" placeholder="Suche">
+        <button type="submit">Suchen</button>
+    </form>
 </div>
 
-    `;
-
-    res.send(`Eintrag erfolgreich als erledigt markiert: ${userTodoList}`);
-});
+        <ul>${todoListHtml}</ul>
+    `
+    res.send(userTodoList)
+}
 
 app.listen(port, () => {
-    console.log(`Express-Server hört auf Port ${port}`);
-});
+    console.log(`Express-Server hört auf Port ${port}`)
+})
