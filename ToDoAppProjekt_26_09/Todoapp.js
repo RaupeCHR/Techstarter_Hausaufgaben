@@ -387,9 +387,9 @@ function renderTodoList(res, name, data) {
 </style>
         <li>
             <strong>${item.title}</strong> - Kategorie: ${item.category}
-            ${item.description ? `<br>${item.description}` : ""}
-            ${item.dueDate ? `<br>Fällig am: ${item.dueDate}` : ""}
-            <br>Status: ${item.status}
+            ${item.description ? `</br>${item.description}` : ""}
+            ${item.dueDate ? `</br>Fällig am: ${item.dueDate}` : ""}
+            </br>Status: ${item.status}
             <form method="post" action="/togglestatus">
                 <input type="hidden" name="name" value="${name}">
                 <input type="hidden" name="index" value="${index}">
@@ -479,13 +479,13 @@ function renderTodoList(res, name, data) {
         <form method="post" action="/addtodo">
             <input type="hidden" name="name" value="${name}">
             <label for="title">Titel:</label>
-            <input name="title" type="text" placeholder="Titel" required>
+            <input name="title" type="text" placeholder="Titel" required></br></br>
             <label for="description">Beschreibung:</label>
-            <input name="description" type="text" placeholder="Beschreibung (optional)">
+            <input name="description" type="text" placeholder="Beschreibung (optional)"></br></br>
             <label for="dueDate">Fälligkeitsdatum:</label>
-            <input name="dueDate" type="date">
+            <input name="dueDate" type="date"></br></br>
             <label for="category">Kategorie:</label>
-            <input name="category" type="text" placeholder="Kategorie (optional)">
+            <input name="category" type="text" placeholder="Kategorie (optional)"></br></br>
             <label for="status">Status:</label>
             <select name="status">
                 <option value="Offen">Offen</option>

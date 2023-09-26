@@ -15,6 +15,10 @@
     {
       "name": "Abi",
       "passwort": "$2a$10$ReBkVgK1HOfpi8hKlsQvu.REZcHZoZldn.Gwa/orzvXUA6aSbEbhq"
+    },
+    {
+      "name": "Lukas",
+      "passwort": "$2a$10$NMmJ32p1lBuiBe1k6Dnk3uazsKVRGTz22cErunmFflPMINegla8pe"
     }
   ],
   "userTodoLists": {
@@ -86,6 +90,7 @@
       }
     ],
     "Dimi ": [],
-    "Abi": []
+    "Abi": [],
+    "Lukas": []
   }
 }
