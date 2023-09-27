@@ -19,6 +19,14 @@
     {
       "name": "Lukas",
       "passwort": "$2a$10$NMmJ32p1lBuiBe1k6Dnk3uazsKVRGTz22cErunmFflPMINegla8pe"
+    },
+    {
+      "name": "martin",
+      "passwort": "$2a$10$QiuxAPmzNpnCEQRT/gIM0eQms1BHcNMFr4u0XVYKONgkXE5E18rAC"
+    },
+    {
+      "name": "Dimitri",
+      "passwort": "$2a$10$lUvIxksTtlwys8ctABPVQuQ.BVJoRsFsKw8zyN8D9iEmixE.HgUiW"
     }
   ],
   "userTodoLists": {
@@ -91,6 +99,31 @@
     ],
     "Dimi ": [],
     "Abi": [],
-    "Lukas": []
+    "Lukas": [],
+    "martin": [
+      {
+        "title": "jjj",
+        "description": "öööö",
+        "dueDate": "2023-09-27",
+        "category": "Gesundheit",
+        "status": "Offen"
+      }
+    ],
+    "Dimitri": [
+      {
+        "title": "Arzttermin",
+        "description": "Prostata Check",
+        "dueDate": "2023-09-29",
+        "category": "Gesundheit",
+        "status": "Offen"
+      },
+      {
+        "title": "Arzttermin",
+        "description": "Prostata Check",
+        "dueDate": "2023-09-29",
+        "category": "Gesundheit",
+        "status": "Offen"
+      }
+    ]
   }
 }
