@@ -3,16 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz-Startseite</title>
     <link rel="stylesheet" href="styles.css">
+    <title>Brain Busters</title>
 </head>
 <body>
     <header>
-        <h1>Willkommen zum Quiz</h1>
+        <h1>Welcome to Brain Busters! Here the questions are harder than choosing between pizza and tacos. Have fun!</h1>
     </header>
+    
     <main>
-        <p>Testen Sie Ihr Wissen und machen Sie das Quiz.</p>
-        <a href="/quiz.html" class="start-quiz-button">Quiz starten</a>
+        <div class="start-container">
+            <button id="start-button">Let's go!</button>
+        </div>
+        
+        <div class="quiz-container" style="display: none;">
+            <h2 class="question"></h2>
+            <div class="options">
+                <!-- Die Antwortmöglichkeiten werden hier eingefügt -->
+            </div>
+            <button id="submit-button">Check</button>
+            <button id="next-button" style="display: none;">Next</button>
+        </div>
+        
+        <div class="result-container" style="display: none;">
+            <p class="result"></p>
+            <p class="final-message"></p>
+            <button id="restart-button">Restart</button>
+        </div>
+        
+        <p class="score">Punktzahl: <span id="score">0</span></p>
     </main>
+    
+    <script src="server.js"></script>
 </body>
 </html>
