@@ -28,7 +28,7 @@ main {
 }
 
 #start-button {
-    background-color: #3498db;
+    background-color: #635353;
     color: #fff;
     font-size: 24px;
     padding: 10px 20px;
@@ -38,7 +38,7 @@ main {
 }
 
 #start-button:hover {
-    background-color: #2980b9;
+    background-color: #878888;
 }
 
 /* Quizcontainer */
@@ -72,8 +72,9 @@ label:hover {
 
 #submit-button,
 #next-button,
-#restart-button {
-    background-color: #3498db;
+#restart-button-quiz,
+#quit-button {
+    background-color: #635353;
     color: #fff;
     font-size: 18px;
     padding: 10px 20px;
@@ -85,8 +86,9 @@ label:hover {
 
 #submit-button:hover,
 #next-button:hover,
-#restart-button:hover {
-    background-color: #2980b9;
+#restart-button-quiz:hover,
+#quit-button:hover {
+    background-color: #878888;
 }
 
 /* Resultcontainer */
@@ -97,7 +99,7 @@ label:hover {
 }
 
 .result {
-    font-size: 20px;
+    font-size: 30px;
     margin-bottom: 10px;
 }
 

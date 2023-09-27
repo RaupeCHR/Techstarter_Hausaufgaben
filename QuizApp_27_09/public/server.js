@@ -69,6 +69,15 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     // Funktion zum Anzeigen der aktuellen Frage
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+    shuffleArray(quizData);
+
     function displayQuestion() {
         const currentQuestion = quizData[currentQuestionIndex];
         questionElement.textContent = currentQuestion.question;
@@ -129,21 +138,50 @@ document.addEventListener("DOMContentLoaded", function () {
         quizContainer.style.display = "none";
         restartButton.style.display = "block";
     }
+const quitButton = document.getElementById("quit-button");
+
+    quitButton.addEventListener("click", endQuiz);
+
+    function endQuiz() {
+        quizContainer.style.display = "none"; // Verberge das Quiz
+        resultContainer.style.display = "block"; // Zeige das Ergebnis
+    
+        const resultText = `Ergebnis: ${score} von ${quizData.length} Fragen richtig beantwortet.`;
+
+    if (score === quizData.length) {
+        finalMessage.textContent = "Perfekt! Du hast alle Fragen richtig beantwortet.";
+    } else if (score >= Math.floor(quizData.length / 2)) {
+        finalMessage.textContent = "Gut gemacht!";
+    } else {
+        finalMessage.textContent = "Weiter üben!";
+    }
+    resultContainer.innerHTML = ""; // Lösche den bisherigen Inhalt
+    resultContainer.appendChild(document.createTextNode(resultText));
+}
+    
+    
 
     // Funktion zum Neustarten des Quiz
     function restartQuiz() {
-        currentQuestionIndex = 0;
-        score = 0;
+        currentQuestionIndex = 0
+        score = 0
+        scoreElement.textContent = "0"
         resultContainer.style.display = "none";
         quizContainer.style.display = "block";
         restartButton.style.display = "none";
         displayQuestion();
     }
+    const restartQuizButton = document.getElementById("restart-button-quiz");
+
+    restartQuizButton.addEventListener("click", restartQuiz);
+    
+    
 
     // Event Listener für den Start-Button
     startButton.addEventListener("click", () => {
         startButton.style.display = "none";
         quizContainer.style.display = "block";
+        shuffleArray(quizData);
         displayQuestion();
     });
 
@@ -161,8 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
     
-    // Event Listener für den Neustart-Button
-    restartButton.addEventListener("click", restartQuiz);
+    
     
     // Initialanzeige
     startButton.style.display = "block";
